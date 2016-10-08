@@ -1,0 +1,10 @@
+HTTP
+
+- the primary way computers communicate over the internet
+- always between a server and client
+  > client makes request and server returns a response
+- "Get" Request (asking for information)
+  > never has a body
+- "Post" Request (sending information)
+  > almost always has a body
+

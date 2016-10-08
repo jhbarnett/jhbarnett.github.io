@@ -1,0 +1,60 @@
+Functional Programming in JS
+  - philosophy 
+    > create small functions and put them together for big results
+  - Common Tools, Patterns, & Assumptions:
+    > Composition
+    > Immutability
+    > Recursion
+      ~ Declarative (vs. Imperative)
+      ~ aka easier to understand b/c we express what solution should look like
+
+Callbacks: 
+  - function that return functions that return other functions
+  - callbacks give up control as to how the function gets called
+  - Passing in a function by variable vs. directly are equivalent
+
+Currying:
+  - Necessitating that a function only accepts one parameter and using nested functions to accommodate apply parameters
+  - This implementation of closures really benefits code reuse and the flexibility of functions
+  - The purpose of curried functions to aid the convenience of putting things together
+  - Curried function order matters! // order impacts a function's flexibility
+  - Curried functions can be particularly nice to use if you are implementing particular FP methods (i.e. map, filter, reduce)
+  - Main purpose of currying is to partially apply arguments on the fly and effectively implement increasingly more complicated & specific functions in bit-size pieces
+  - Keep things from getting messy with variable assignments & good descriptive names
+  - Function Composition:	
+		function compose (firstFn, secondFn) {
+			return function (x) {
+				return secondFn( firstFn(x) )
+			}
+		}
+  - Alternative to manual approach >> "Partial Application" >> fn.bind(null, x)
+
+Asynchronous Callbacks:
+  - An asynchronous function will not run until the current block of code (usually script tag) has completed running first, no matter how many or few milliseconds we prescribed to setTimeout
+  - When you run multiple lines of code in JS, you can be absolutely certain asynchronous code only be injected at the end of the queue
+  -- Keep an eyeon when an asynchronous callback reaches the queue in comparison to other asysnc callbacks
+  - train of thought: 
+    > JS can only run one line at a time & if something in the queue is holding everything else up behind it they must wait
+  - Real World Example: jquery AJAX network requests
+
+Promises:
+  - jQuery will return a promise whenever you use $.ajax 
+  - a promise is an empty box that promises to be filled with some value
+  - a promise represents a future or eventual value as a placeholder until it arrives, in which case it is fixed and immutable
+  - to access that value (or "open the box") you must use .then(callback)
+  - each promise possesses its own queue where the network request is first in line; .then() enqueue some "response body" to the promise that will return after the network request is filled
+  - .then() is like an event -- only runs at the end of a specific promise's queue
+  - useful feature -- inversion of control -- currying promises...for better architecture
+  - a promise queue will execute asynchronously once the promise value is resolved
+  - Promise Chaining:
+    > .then() will add your promise to the queue but also return a new promise based on the original promise
+    > think of it as a tree with each node indicating a child promise and .then() serving as the links
+    > where the original promise gets its value from the internet/network, the child promises get values from the previous promises's .then()
+    > breadth-first -- look at all children on one level before going deeper 
+    > chaining is useful if you're writing functions to get specific results
+    > a promise has two tracks, the success track and the error track.
+      >> if your promise's network request returns an error, .then()'s will never run
+      >> where .then() abides by success, .catch() is the equivalent for errors
+      >> once you catch an error, you will be switched back to the success track because the error is considered to be handled (so you usually just put catch at the very end)
+  - Promises free us from having to use messy callbacks
+  - 
